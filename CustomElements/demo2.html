@@ -1,0 +1,27 @@
+<!Doctype html>
+<html>
+<head></head>
+<body>
+	<most-basic style = "display:block; font-size: 7em; color: orange; text-align:center; margin-top:300px;">
+		&lt;most-basic&gt;&lt;/most-basic&gt;
+	</most-basic>
+	<quote></quote>
+	<script>
+		(function() {
+			var mostBasicProto = document.querySelector('most-basic').__proto__;
+			console.log(mostBasicProto);	
+
+			var quoteProto = document.querySelector('quote').__proto__;
+			console.log(quoteProto);	
+
+		    var MostBasic = document.registerElement('most-basic', {
+		    	prototype: Object.create(HTMLElement.prototype)
+		    });
+
+		    var secondMostBasic = new MostBasic();
+		    console.log(secondMostBasic.__proto__);
+
+		}());
+	</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="container">
+		<p style="color: green; font-size: 3em; text-align: center; margin-top 200px;">Light DOM Text</p>
+	</div>
+	<script>
+	(function() {
+		var addShadowRoot = function() {
+			var container = document.querySelector('.container');
+			var shadowRoot = container.createShadowRoot();
+			shadowRoot.innerHTML = '<p style="color:grey; font-size: 3em; text-align: center; margin-top: 200px;" id="shadow">Shadow DOM Text</p><content></content>';
+
+			return function() {
+				console.log(shadowRoot.querySelector('#shadow'));
+			}
+		}
+
+		var printShadowElementsFromShadowDom = addShadowRoot();
+		
+		var printShadowElementsFromLightDom = function() {
+			var shadowContent = document.querySelector('#shadow');
+			console.log(shadowContent === null ? 'I hit the shadow boundary' : shadowContent);
+		}
+
+		printShadowElementsFromLightDom();
+		printShadowElementsFromShadowDom();
+	}());
+	</script>
+</body>
+</html>

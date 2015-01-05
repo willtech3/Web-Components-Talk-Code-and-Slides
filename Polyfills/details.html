@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="jquery.details.min.js"></script>
+	<link href="details.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<style>
+	div {
+		margin:auto;
+		margin-top: 200px;
+		width: 800px;
+	}	
+	p {
+		text-align:center;
+		font-size:4em;
+		color: black;
+	}
+	details {
+		color:green;
+	}
+	details > p {
+		font-size:2em;
+		color: green;
+	}
+	details > summary {
+		font-size: 3em;
+	}
+</style>
+	<div class='container'>
+		<p>What exactly is a polyfill?</p>
+		<details>
+			<summary>Definition:</summary>
+			<p>"A piece of code (or plugin) that provides the technology that you, the developer, expect the browser to provide natively."</p>
+			<p>-Remy Sharp</p>
+		</details>
+	</div>
+	<script>
+	(function() {
+		$('html').addClass($.fn.details.support ? 'details' : 'no-details');
+		$('details').details();
+		if(!$.fn.details.support)
+		$('summary').prepend('&nbsp;&nbsp;&nbsp;');
+	}());
+	</script>
+</body>
+</html>

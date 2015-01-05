@@ -1,0 +1,22 @@
+{
+  "name": "PolymerDemos",
+  "version": "0.0.0",
+  "authors": [
+    "Will Lane <william.west.lane@gmail.com>"
+  ],
+  "description": "some Polymer demos",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.1",
+    "core-elements": "Polymer/core-elements#~0.5.1",
+    "paper-elements": "Polymer/paper-elements#~0.5.1"
+  }
+}

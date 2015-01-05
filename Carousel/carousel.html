@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+	<template id="custom-carousel">
+		<style>
+			/*hack hack hack FIX THIS*/
+			@import "../bower_components/bootstrap/dist/css/bootstrap.min.css";
+			.background {
+				margin-right: auto;
+				margin-left: auto;
+				margin-top:50px;
+				height: 600px;
+				width: 800px;
+				background: 1px solid black;
+				background-color: green;
+			}
+			.circle-container {
+				width: 100px;
+				margin-top: 315px;
+				margin-left: auto;
+				margin-right:auto;
+				height:25px;
+			}
+			.circle {
+				background-color: black;
+				float:left;
+				margin-left:auto;
+				margin-right: 5px;
+				width: 20px;
+				height: 20px;
+				border-radius: 2em;
+			}
+			span.glyphicon {
+				font-size: 3em;
+				color:white;
+				margin-top:250px;
+			}
+		</style>
+		<div class="background">
+			<span id="left" class="glyphicon glyphicon-chevron-left"></span>
+			<span id="right" class="glyphicon glyphicon-chevron-right" style="float:right;"></span>
+		</div>
+		<content select="img"></content>
+	</template>
+	<script>
+	(function() {
+		var importDoc = document.currentScript.ownerDocument;
+		var intro = Object.create(HTMLElement.prototype);
+		intro.createdCallback = function() {
+			var template = importDoc.querySelector('#custom-carousel');
+			var clone = document.importNode(template.content, true);
+			var root = this.createShadowRoot();
+			root.appendChild(clone);
+			
+			//get all the images in the content of the custom element
+			this.images = root.querySelector('content').getDistributedNodes();
+
+			//store some references to shadowDom elements we will need later
+			var div = root.querySelector('.background');
+			var left = root.querySelector('#left');
+			var right = root.querySelector('#right');
+
+			//alias this so we can don't have to worry about it changing with function invocation
+			var carousel = this;
+
+			var createNavCircles = function() {
+				var circleContainer = document.createElement('div');
+				circleContainer.className = "circle-container";
+				for(var j = 0; j < carousel.images.length; j++) {
+					var circle = document.createElement('div');
+					circle.className = "circle";
+					circleContainer.appendChild(circle);
+				}
+				div.appendChild(circleContainer);	
+			}
+
+			var initNavCircles = function() {
+				var index = $(div).data('i');
+				var theCircles = root.querySelectorAll('.circle');
+				var firstCircle = theCircles[0];
+				$(firstCircle).css('background-color', 'black');
+
+				for(var i = 0; i < theCircles.length; i++) {
+					if(i === 0) continue
+					$(theCircles[i]).css('background-color', 'white');
+					$(theCircles[i]).css('border', '1px solid black');
+				}
+			}
+
+			var hideImages = function() {
+				//loop over the images and hide them
+				for(var i = 0; i < carousel.images.length; i++) {
+					$(carousel.images[i]).css('display', 'none');
+				}
+			}
+			
+			var initBackgroundImage = function() {
+					if($(div).css('background-image') === "none") {
+					$(div).css('background-image', 'url("'+ carousel.images[0].src +'")').fadeIn('slow');
+					$(div).data('i', 0);
+				}
+			}
+
+			var toggleCircleCss = function(oldCircle, newCircle) {
+				$(newCircle).css('background-color', 'black');
+				$(newCircle).css('border', 'none');
+
+				$(oldCircle).css('background-color', 'white');
+				$(oldCircle).css('border', '1px solid black');
+			}
+
+			this.next = function() {
+				var index = $(div).data('i');
+				var newIndex = this.images[index + 1] === undefined ? 0 : index + 1;
+				var newUrl = this.images[newIndex].src;
+				$(div).css('background-image', 'url("' + newUrl +'")').fadeIn('fast');
+				$(div).data('i', newIndex);
+
+				var newCircle = root.querySelectorAll('.circle')[newIndex];
+				var oldCircle = root.querySelectorAll('.circle')[index];
+				toggleCircleCss(oldCircle, newCircle);
+			}
+
+			this.prev = function() {
+				var index = $(div).data('i');
+				var newIndex = this.images[index - 1] === undefined ? this.images.length - 1 : index - 1;
+				var newUrl = this.images[newIndex].src;
+				$(div).css('background-image', 'url("' + newUrl +'")').fadeIn('fast');
+				$(div).data('i', newIndex);
+
+				var newCircle = root.querySelectorAll('.circle')[newIndex];
+				var oldCircle = root.querySelectorAll('.circle')[index];
+				toggleCircleCss(oldCircle, newCircle);
+			}
+
+			$(right).on('click',function() {
+				carousel.next();
+			});
+
+			$(left).on('click', function() {
+				carousel.prev();
+			});
+
+			createNavCircles();
+			initNavCircles();
+			hideImages();
+			initBackgroundImage();
+		}
+	 	document.registerElement('custom-carousel', {prototype: intro});
+	})();
+	</script>
+</body>
+</html>

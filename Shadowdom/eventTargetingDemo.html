@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<style>
+		div {
+			margin: auto;
+			height: 500px;
+			width: 500px;
+			border: 5px solid black;
+			background-color: darkred;
+			margin-top: 50px;
+		}
+	</style>
+	<div id="shadowHost">
+	</div>
+	<template id="template">
+		<style>
+			div {
+				margin: auto;
+				height: 250px;
+				width: 250px;
+				border: 5px solid black;
+				background-color: gold;
+				margin-top:100px;
+			}
+		</style>
+		<div id="shadowElement">
+			<p>Some content here.</p>
+		</div>
+	</template>
+	<script>
+		(function() {
+			var shadowHost = document.querySelector('#shadowHost');
+			var template = document.querySelector('#template');
+			var shadowRoot = shadowHost.createShadowRoot();
+			shadowRoot.appendChild(document.importNode(template.content, true));
+
+			 document.addEventListener('click', function(e) {
+      				console.log(e.target.id + ' clicked!');
+    		 });
+		}());
+	</script>
+</body>
+</html>

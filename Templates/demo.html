@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<style>
+	   .container {
+	   		border: 1px solid black;
+	   		height: 900px;
+	   		width: 900px;
+	   		margin: auto;
+	   }
+	</style>
+	<div class="container">
+	</div>
+	<template id="reusabledom">
+		<p style="color: green; font-size: 3em; text-align: center; margin-top 200px;">
+			I'm a reusable piece of DOM.
+		</p>
+		<img src="../Carousel/nightSkyline.jpg">
+		<script>
+			(function() {
+				alert('Im running now!');
+			})();
+		</script>
+	</template>
+	<script>
+	//uncomment the below script and the contents of the template will be added to '.container'
+	//and the paragraph will display, the script will run and the image will load.
+	(function() {
+		var container = document.querySelector('.container');
+		var template = document.querySelector('#reusabledom');
+		var clone = document.importNode(template.content, true);
+		container.appendChild(clone);
+	}());
+	</script>
+</body>
+</html>

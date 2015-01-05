@@ -1,0 +1,30 @@
+<html>
+	<template id="fresh-intro" name="fresh-intro">
+	<style>
+		p { font-size: 3em;}
+		div {width: 800px; height: 600px; margin-left:auto; margin-right: auto;}
+	</style>
+	<div>
+		<p>Now, this is the story all about how
+			My life got flipped-turned upside down
+			And I'd like to take a minute, just sit right there
+			I'll tell you how I became the prince of a town called Bel Air.
+		</p>
+	</div>
+	</template>
+	<script>
+		(function () {
+			var importDoc = document.currentScript.ownerDocument;
+			var intro = Object.create(HTMLElement.prototype);
+			intro.createdCallback = function() {
+				var template = importDoc.querySelector('#fresh-intro');
+				var clone = document.importNode(template.content, true);
+				var root = this.createShadowRoot();
+				root.appendChild(clone);
+			}
+		 	document.registerElement('fresh-intro', {prototype: intro});
+		}());
+	</script>
+</html>
+
+
